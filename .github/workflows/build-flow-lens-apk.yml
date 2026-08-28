@@ -39,11 +39,14 @@ jobs:
       - name: Build compatibility APK
         run: gradle -p flow-lens/android :app:assembleDebug
 
-      - name: Verify Android signature
-        run: $ANDROID_HOME/build-tools/35.0.0/apksigner verify --verbose flow-lens/android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Verify package and version
+        run: $ANDROID_HOME/build-tools/35.0.0/aapt dump badging flow-lens/android/app/build/outputs/apk/debug/app-debug.apk | head -n 3
+
+      - name: Verify Android signature and certificate
+        run: $ANDROID_HOME/build-tools/35.0.0/apksigner verify --verbose --print-certs flow-lens/android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: BNB-Flow-Lens-v1.3
+          name: BNB-Flow-Lens-v1.3.1
           path: flow-lens/android/app/build/outputs/apk/debug/app-debug.apk

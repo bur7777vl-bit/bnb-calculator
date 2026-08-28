@@ -1,0 +1,7 @@
+BNB Flow Lens Android v1.1
+- 3 swipe pages: DOM | Overview | Context
+- Overview is the default center page
+- Shared M15 / H1 / H4 selector
+- DOM keeps step and level controls plus top-3 wall highlighting
+- Context adds selected-timeframe candle, range, volume, taker, OI delta, long/short and a non-entry summary
+- Public Binance Futures data only; no API keys; no trading

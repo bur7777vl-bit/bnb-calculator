@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Deep navy background; the launcher applies the device mask. -->
+    <path android:fillColor="#07111D" android:pathData="M0,0H108V108H0Z"/>
+    <path android:fillColor="#0E1C2C" android:pathData="M4,4H104V104H4Z"/>
+
+    <!-- Subtle volume columns. -->
+    <path android:fillColor="#16324D" android:pathData="M10,82H15V96H10ZM18,77H23V96H18ZM26,85H31V96H26ZM77,79H82V96H77ZM85,70H90V96H85ZM93,61H98V96H93Z"/>
+
+    <!-- Gold market curve. -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#F5B62E"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round"
+        android:pathData="M8,76 C24,73 30,65 40,67 C52,70 57,62 66,63 C77,64 82,53 100,47"/>
+
+    <!-- Candles behind the lens. -->
+    <path android:fillColor="#67CF6A" android:pathData="M13,58H17V70H13ZM14.4,53H15.6V75H14.4Z"/>
+    <path android:fillColor="#E84E45" android:pathData="M20,61H24V70H20ZM21.4,56H22.6V75H21.4Z"/>
+    <path android:fillColor="#68D56C" android:pathData="M28,54H32V66H28ZM29.4,49H30.6V71H29.4Z"/>
+    <path android:fillColor="#EF5549" android:pathData="M35,59H39V69H35ZM36.4,54H37.6V74H36.4Z"/>
+    <path android:fillColor="#67CF6A" android:pathData="M73,50H77V62H73ZM74.4,45H75.6V67H74.4Z"/>
+    <path android:fillColor="#E84E45" android:pathData="M81,44H85V57H81ZM82.4,39H83.6V63H82.4Z"/>
+    <path android:fillColor="#68D56C" android:pathData="M89,35H93V50H89ZM90.4,29H91.6V56H90.4Z"/>
+    <path android:fillColor="#6BDD70" android:pathData="M97,27H101V43H97ZM98.4,21H99.6V49H98.4Z"/>
+
+    <!-- Magnifying lens: metallic double ring with blue glow. -->
+    <path
+        android:fillColor="#101923"
+        android:strokeColor="#2B9CEB"
+        android:strokeWidth="5.0"
+        android:pathData="M55,18 A31,31 0,1 1,54.9,18Z"/>
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#D6DEE8"
+        android:strokeWidth="3.2"
+        android:pathData="M55,19 A30,30 0,1 1,54.9,19Z"/>
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#31465B"
+        android:strokeWidth="1.4"
+        android:pathData="M55,23 A26,26 0,1 1,54.9,23Z"/>
+
+    <!-- Binance-style mark inside the lens. -->
+    <path android:fillColor="#F7C51D" android:pathData="M55,32L63,40L55,48L47,40Z"/>
+    <path android:fillColor="#F7C51D" android:pathData="M40,47L47,54L40,61L33,54Z"/>
+    <path android:fillColor="#FFD329" android:pathData="M55,47L62,54L55,61L48,54Z"/>
+    <path android:fillColor="#F7C51D" android:pathData="M70,47L77,54L70,61L63,54Z"/>
+    <path android:fillColor="#F2B912" android:pathData="M55,62L63,70L55,78L47,70Z"/>
+    <path android:fillColor="#FFD329" android:pathData="M47,41L51,45L47,49L43,45Z"/>
+    <path android:fillColor="#FFD329" android:pathData="M63,41L67,45L63,49L59,45Z"/>
+    <path android:fillColor="#FFD329" android:pathData="M47,59L51,63L47,67L43,63Z"/>
+    <path android:fillColor="#FFD329" android:pathData="M63,59L67,63L63,67L59,63Z"/>
+
+    <!-- Lens handle. -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#172536"
+        android:strokeWidth="11"
+        android:strokeLineCap="round"
+        android:pathData="M77,77L96,96"/>
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#CBD3DC"
+        android:strokeWidth="2.3"
+        android:strokeLineCap="round"
+        android:pathData="M77,77L96,96"/>
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#F5B62E"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:pathData="M83,83L87,87"/>
+</vector>

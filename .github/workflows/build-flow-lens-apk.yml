@@ -33,11 +33,11 @@ jobs:
         with:
           gradle-version: "8.10.2"
 
-      - name: Build APK
-        run: gradle -p flow-lens/android :app:assembleDebug
+      - name: Build unsigned APK
+        run: gradle -p flow-lens/android :app:assembleRelease
 
-      - name: Upload APK
+      - name: Upload unsigned APK
         uses: actions/upload-artifact@v4
         with:
-          name: BNB-Flow-Lens-APK-v1.1
-          path: flow-lens/android/app/build/outputs/apk/debug/app-debug.apk
+          name: BNB-Flow-Lens-Unsigned-v1.1
+          path: flow-lens/android/app/build/outputs/apk/release/app-release-unsigned.apk

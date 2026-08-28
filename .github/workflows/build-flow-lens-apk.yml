@@ -36,14 +36,14 @@ jobs:
       - name: Restore stable dev signing key
         run: base64 --decode flow-lens/android/flow-lens-dev.jks.b64 > flow-lens/android/flow-lens-dev.jks
 
-      - name: Build signed APK
-        run: gradle -p flow-lens/android :app:assembleRelease
+      - name: Build compatibility APK
+        run: gradle -p flow-lens/android :app:assembleDebug
 
       - name: Verify Android signature
-        run: $ANDROID_HOME/build-tools/35.0.0/apksigner verify --verbose flow-lens/android/app/build/outputs/apk/release/app-release.apk
+        run: $ANDROID_HOME/build-tools/35.0.0/apksigner verify --verbose flow-lens/android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: BNB-Flow-Lens-Signed-v1.1
-          path: flow-lens/android/app/build/outputs/apk/release/app-release.apk
+          name: BNB-Flow-Lens-Compat-v1.1.1
+          path: flow-lens/android/app/build/outputs/apk/debug/app-debug.apk

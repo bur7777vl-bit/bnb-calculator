@@ -40,7 +40,8 @@ public class MainActivity extends Activity {
     private double step = 1.0;
     private int levels = 9;
     private boolean running = true;
-    private float touchX;
+    private float touchX, touchY;
+    private boolean swipeHandled = false;
     private final Map<String,Integer> holdCounts = new HashMap<>();
     private final Map<String,Button> tfButtons = new HashMap<>();
 
@@ -59,6 +60,30 @@ public class MainActivity extends Activity {
         super.onCreate(b);
         buildUi();
         refresh();
+    }
+
+    @Override public boolean dispatchTouchEvent(MotionEvent e) {
+        if (pager != null) {
+            if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                touchX = e.getRawX();
+                touchY = e.getRawY();
+                swipeHandled = false;
+            } else if (e.getActionMasked() == MotionEvent.ACTION_UP && !swipeHandled) {
+                float dx = e.getRawX() - touchX;
+                float dy = e.getRawY() - touchY;
+                if (Math.abs(dx) >= dp(55) && Math.abs(dx) > Math.abs(dy) * 1.15f) {
+                    int cur = pager.getDisplayedChild();
+                    if (dx > 0 && cur > 0) {
+                        goToPage(cur - 1, true);
+                        swipeHandled = true;
+                    } else if (dx < 0 && cur < pager.getChildCount() - 1) {
+                        goToPage(cur + 1, false);
+                        swipeHandled = true;
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(e);
     }
 
     @Override protected void onDestroy() {
@@ -104,7 +129,6 @@ public class MainActivity extends Activity {
         pager.addView(overviewPage());
         pager.addView(contextPage());
         pager.setDisplayedChild(1);
-        pager.setOnTouchListener((v,e)->handleSwipe(e));
         shell.addView(pager,new LinearLayout.LayoutParams(-1,0,1));
         updateDots(); updateTfButtons();
 
@@ -164,16 +188,11 @@ public class MainActivity extends Activity {
         return sv;
     }
 
-    private boolean handleSwipe(MotionEvent e){
-        if(e.getAction()==MotionEvent.ACTION_DOWN){ touchX=e.getX(); return true; }
-        if(e.getAction()==MotionEvent.ACTION_UP){
-            float dx=e.getX()-touchX; if(Math.abs(dx)<dp(55)) return true;
-            int cur=pager.getDisplayedChild();
-            if(dx>0 && cur>0){ animatePager(true); pager.showPrevious(); updateDots(); }
-            else if(dx<0 && cur<pager.getChildCount()-1){ animatePager(false); pager.showNext(); updateDots(); }
-            return true;
-        }
-        return true;
+    private void goToPage(int target, boolean right) {
+        if (pager == null || target < 0 || target >= pager.getChildCount() || target == pager.getDisplayedChild()) return;
+        animatePager(right);
+        pager.setDisplayedChild(target);
+        updateDots();
     }
 
     private void animatePager(boolean right){
@@ -185,7 +204,15 @@ public class MainActivity extends Activity {
 
     private void updateDots(){
         dots.removeAllViews(); int cur=pager==null?1:pager.getDisplayedChild();
-        for(int i=0;i<3;i++){ TextView d=tv(i==cur?"●":"○",14,i==cur?BLUE:MUTED,true); d.setGravity(Gravity.CENTER); d.setPadding(dp(3),0,dp(3),0); dots.addView(d); }
+        for(int i=0;i<3;i++){
+            final int target=i;
+            TextView d=tv(i==cur?"●":"○",16,i==cur?BLUE:MUTED,true);
+            d.setGravity(Gravity.CENTER);
+            d.setPadding(dp(10),dp(4),dp(10),dp(4));
+            d.setClickable(true);
+            d.setOnClickListener(v->{ int from=pager.getDisplayedChild(); goToPage(target,target<from); });
+            dots.addView(d);
+        }
     }
 
     private void updateTfButtons(){
@@ -267,7 +294,7 @@ public class MainActivity extends Activity {
 
     private double sum(List<Level> ls){ double x=0; for(Level l:ls)x+=l.qty; return x; }
     private String compact(double v){ if(v>=1_000_000)return p2.format(v/1_000_000)+"M"; if(v>=1000)return p2.format(v/1000)+"K"; return p2.format(v); }
-    private String get(String u) throws Exception { HttpURLConnection c=(HttpURLConnection)new URL(u).openConnection(); c.setConnectTimeout(7000); c.setReadTimeout(7000); c.setRequestProperty("User-Agent","BNB-Flow-Lens-Android/1.1"); int code=c.getResponseCode(); if(code!=200)throw new RuntimeException("HTTP "+code); BufferedReader r=new BufferedReader(new InputStreamReader(c.getInputStream(),StandardCharsets.UTF_8)); StringBuilder b=new StringBuilder(); String line; while((line=r.readLine())!=null)b.append(line); r.close(); c.disconnect(); return b.toString(); }
+    private String get(String u) throws Exception { HttpURLConnection c=(HttpURLConnection)new URL(u).openConnection(); c.setConnectTimeout(7000); c.setReadTimeout(7000); c.setRequestProperty("User-Agent","BNB-Flow-Lens-Android/1.2"); int code=c.getResponseCode(); if(code!=200)throw new RuntimeException("HTTP "+code); BufferedReader r=new BufferedReader(new InputStreamReader(c.getInputStream(),StandardCharsets.UTF_8)); StringBuilder b=new StringBuilder(); String line; while((line=r.readLine())!=null)b.append(line); r.close(); c.disconnect(); return b.toString(); }
 
     static class Level { double price,qty; Level(double p,double q){price=p;qty=q;} }
     static class Snapshot { double price,change,oi,oiDelta,buyVol,sellVol,ls,open,high,low,close,volume; List<Level> asks,bids; }

@@ -1,0 +1,49 @@
+name: Build BNB Flow Lens APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "flow-lens-android" ]
+    paths:
+      - "flow-lens/**"
+      - ".github/workflows/build-flow-lens-apk.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android 35
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.10.2"
+
+      - name: Unpack Flow Lens project
+        run: |
+          rm -rf extracted
+          mkdir extracted
+          unzip -q flow-lens/BNB-Flow-Lens-Android-Source.zip -d extracted
+
+      - name: Build APK
+        run: gradle -p extracted/BNB-Flow-Lens-Android :app:assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BNB-Flow-Lens-APK
+          path: extracted/BNB-Flow-Lens-Android/app/build/outputs/apk/debug/app-debug.apk

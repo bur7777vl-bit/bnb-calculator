@@ -14,9 +14,19 @@ android {
         versionName = "1.1"
     }
 
+    signingConfigs {
+        create("flowLensDev") {
+            storeFile = file("../flow-lens-dev.jks")
+            storePassword = "android"
+            keyAlias = "flowlens"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("flowLensDev")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

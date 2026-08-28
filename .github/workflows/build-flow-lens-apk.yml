@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "flow-lens-android" ]
     paths:
-      - "flow-lens/BNB-Flow-Lens-Android-v1.1.zip.b64"
+      - "flow-lens/android/**"
       - ".github/workflows/build-flow-lens-apk.yml"
 
 jobs:
@@ -33,19 +33,11 @@ jobs:
         with:
           gradle-version: "8.10.2"
 
-      - name: Decode and unpack Flow Lens v1.1
-        run: |
-          rm -rf extracted
-          mkdir extracted
-          base64 --decode --ignore-garbage flow-lens/BNB-Flow-Lens-Android-v1.1.zip.b64 > flow-lens-v1.1.zip
-          unzip -t flow-lens-v1.1.zip
-          unzip -q flow-lens-v1.1.zip -d extracted
-
       - name: Build APK
-        run: gradle -p extracted/BNB-Flow-Lens-Android :app:assembleDebug
+        run: gradle -p flow-lens/android :app:assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: BNB-Flow-Lens-APK-v1.1
-          path: extracted/BNB-Flow-Lens-Android/app/build/outputs/apk/debug/app-debug.apk
+          path: flow-lens/android/app/build/outputs/apk/debug/app-debug.apk
